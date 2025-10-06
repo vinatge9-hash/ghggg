@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='UTF-8' />
+  <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+  <title>Brew & Bloom Coffee — Contact</title>
+  <meta name='description' content='Get in touch with Brew & Bloom Coffee. Find our location, hours, and send us a message.' />
+  <script src='https://cdn.tailwindcss.com'></script>
+  <style>
+    :root { --primary:#3C2A21; --secondary:#85583A; --accent:#E0A36D; --glass-bg: rgba(60,42,33,.75); --glass-border: rgba(133,88,58,.25); }
+    * { cursor: none !important; }
+  </style>
+</head>
+<body class='bg-black text-white'>
+  <canvas id='particles-canvas' style='position: fixed; inset:0; z-index:-1;'></canvas>
+  <div id='cursor-dot' class='cursor-dot' style='position: fixed; left:0; top:0;'></div>
+  <div id='cursor-outline' class='cursor-outline' style='position: fixed; left:0; top:0;'></div>
+
+  <nav class='glass-nav glass sticky top-0 z-50'>
+    <div class='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+      <div class='flex justify-between items-center h-20'>
+        <a href='index.html' class='text-2xl font-bold'> Brew & Bloom</a>
+        <div class='hidden md:flex items-center space-x-6'>
+          <a href='index.html' class='hover:text-accent'>Home</a>
+          <a href='about.html' class='hover:text-accent'>Our Story</a>
+          <a href='contact.html' class='hover:text-accent'>Contact</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section class='min-h-screen flex items-center justify-center' style="background-image:url('https://images.unsplash.com/photo-1526312426976-593c1b9f2b67?auto=format&fit=crop&w=1400&q=80'); background-size:cover; background-position:center;">
+    <div class='bg-black/40 glass p-8 rounded-lg max-w-2xl'>
+      <h1 class='text-4xl font-bold mb-4'>Contact Brew & Bloom</h1>
+      <p class='mb-6'>We’d love to hear from you. Reach out with questions, catering inquiries, or just to say hi.</p>
+      <form class='grid grid-cols-1 gap-4'>
+        <input class='glass p-3 rounded' placeholder='Your Name' />
+        <input class='glass p-3 rounded' placeholder='Email' type='email' />
+        <textarea class='glass p-3 rounded' placeholder='Message' rows='4'></textarea>
+        <button class='glass-button px-4 py-2 rounded'>Send Message</button>
+      </form>
+      <div class='mt-6 text-sm opacity-90'>
+        <p>Address: 123 Glasshouse Ave, Coffeetown</p>
+        <p>Hours: Mon-Sun 7:00–18:00</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class='py-6 text-center opacity-70'>© Brew & Bloom Coffee</footer>
+
+  <script>
+    // Basic features (same as other pages) to keep interactions consistent
+    function initGlassmorphism(){ const s=document.createElement('style'); s.textContent=`.glass{ background: rgba(60,42,33,.75); backdrop-filter: blur(10px); border:1px solid rgba(133,88,58,.25);} `; document.head.appendChild(s); }
+    function initParticles(){ const canvas=document.getElementById('particles-canvas'); const ctx=canvas.getContext('2d'); let w=window.innerWidth, h=window.innerHeight; canvas.width=w; canvas.height=h; const pts=[]; class P{ constructor(){ this.x=Math.random()*w; this.y=Math.random()*h; this.s=Math.random()*2+1; this.vx=(Math.random()-0.5)*0.6; this.vy=(Math.random()-0.5)*0.6; this.a=Math.random()*0.5+0.2; } upd(){ this.x+=this.vx; this.y+=this.vy; if(this.x>w) this.x=0; if(this.x<0) this.x=w; if(this.y>h) this.y=0; if(this.y<0) this.y=h; } d(){ ctx.fillStyle=`rgba(255,255,255,${this.a})`; ctx.beginPath(); ctx.arc(this.x,this.y,this.s,0,Math.PI*2); ctx.fill(); } }
+      for(let i=0;i<70;i++) pts.push(new P());
+      function loop(){ ctx.clearRect(0,0,w,h); pts.forEach(p=>{ p.upd(); p.d(); }); for(let i=0;i<pts.length;i++){ for(let j=i+1;j<pts.length;j++){ const dx=pts[i].x-pts[j].x; const dy=pts[i].y-pts[j].y; const dist=Math.sqrt(dx*dx+dy*dy); if(dist<120){ ctx.strokeStyle=`rgba(255,255,255,${0.1*(1-dist/120)})`; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y); ctx.lineTo(pts[j].x, pts[j].y); ctx.stroke(); } } } requestAnimationFrame(loop); }
+      loop(); window.addEventListener('resize', ()=>{ w=window.innerWidth; h=window.innerHeight; canvas.width=w; canvas.height=h; }); }
+    function initCursor(){ const dot=document.getElementById('cursor-dot'); const outline=document.getElementById('cursor-outline'); let mx=0,my=0, ox=0, oy=0; document.addEventListener('mousemove', (e)=>{ mx=e.clientX; my=e.clientY; dot.style.left=mx+'px'; dot.style.top=my+'px'; }); (function animate(){ ox += (mx-ox)*0.15; oy += (my-oy)*0.15; outline.style.left=ox+'px'; outline.style.top=oy+'px'; requestAnimationFrame(animate); })(); }
+    function initAll(){ initGlassmorphism(); initParticles(); initCursor(); }
+    document.addEventListener('DOMContentLoaded', initAll);
+  </script>
+</body>
+</html>
